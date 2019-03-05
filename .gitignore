@@ -1,0 +1,6 @@
+#IDEA files
+.idea/
+target/
+
+# Java files
+*.class
