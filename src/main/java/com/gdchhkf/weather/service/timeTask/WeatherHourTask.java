@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -23,6 +24,7 @@ import java.util.Map;
  * @Date 2019/3/3 14:29
  * @Version 1.0
  **/
+@Component
 public class WeatherHourTask {
 
     private final String url = "http://api.data.cma.cn:8090/api?" +
@@ -54,7 +56,7 @@ public class WeatherHourTask {
      * @Param [event]
      * @return void
      **/
-    @Scheduled(cron = "0 30 9/1 * * ? *")
+    @Scheduled(fixedDelay = 60 * 60 * 1000)
     private void weatherHourListener(){
         //9小时之前
         LocalDateTime nineHoursAgo = LocalDateTime.now().minusHours(9).withMinute(0).withSecond(0);
@@ -67,9 +69,9 @@ public class WeatherHourTask {
         Weather weather = readWeatherFromJson(content);
 
         //写入HDFS
-        String fileName = nineHoursAgo.format(DateTimeFormatter.ofPattern("uuuu_MM_d"));
+        String fileName = nineHoursAgo.format(DateTimeFormatter.ofPattern("uuuu_MM_dd"));
         String path = "/weather/hour/" + fileName;
-        hdfsService.appendFile(path, weather.toString());
+        hdfsService.appendFile(path, weather.toString() + "/n");
 
         //存入缓存
         cache.put("now", weather);

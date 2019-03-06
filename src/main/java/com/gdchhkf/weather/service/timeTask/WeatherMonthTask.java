@@ -4,6 +4,7 @@ import com.gdchhkf.weather.service.MapReduceService;
 import com.gdchhkf.weather.service.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
  * @Date 2019/3/3 14:39
  * @Version 1.0
  **/
+@Component
 public class WeatherMonthTask {
 
     @Autowired
@@ -21,7 +23,7 @@ public class WeatherMonthTask {
     @Autowired
     private TimeUtils utils;
 
-    @Scheduled(cron = "0 0 10 1 1/1 ? *")
+    @Scheduled(cron = "0 0 10 1 1/1 ?")
     public void weatherMonthListener() {
         List<String> files = utils.getExistsPastMonthFile();
         mapReduceService.createWeatherMonthJob(files);

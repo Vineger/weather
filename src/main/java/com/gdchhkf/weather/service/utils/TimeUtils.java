@@ -7,8 +7,10 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,6 +36,21 @@ public class TimeUtils {
     public LocalDateTime getLastMonday() {
         LocalDateTime today = LocalDateTime.now();
         return today.minusDays(today.getDayOfWeek().getValue());
+    }
+
+    /**
+     * @Author gdchhkf@163.com
+     * @Description
+     *
+     *
+     * @Date 14:20 2019/3/5
+     * @Param [dateTime]
+     * @return Date
+     **/
+    public Date parseLocalDateTimeToDate(LocalDateTime dateTime){
+        ZoneId zoneId = ZoneId.systemDefault();
+        ZonedDateTime zonedDateTime = dateTime.atZone(zoneId);
+        return Date.from(zonedDateTime.toInstant());
     }
 
     /**

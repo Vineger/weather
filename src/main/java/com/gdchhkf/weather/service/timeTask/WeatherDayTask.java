@@ -3,6 +3,7 @@ package com.gdchhkf.weather.service.timeTask;
 import com.gdchhkf.weather.service.MapReduceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.time.format.DateTimeFormatter;
  * @Date 2019/3/3 14:31
  * @Version 1.0
  **/
+@Component
 public class WeatherDayTask {
 
     @Autowired
@@ -27,7 +29,7 @@ public class WeatherDayTask {
      * @Param [event]
      * @return void
      **/
-    @Scheduled(cron = "0 30 9 1/1 * ? *")
+    @Scheduled(cron = "0 0 10 1/1 * ?")
     private void weatherDayListener(){
         mapReduceService.createWeatherDayJob(getWeatherHourFileName());
     }

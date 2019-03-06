@@ -1,2 +1,8 @@
 hdfs:
   url: hdfs://192.168.254.100:9000
+
+spring:
+  profiles: dev
+---
+hdfs:
+  url: hdfs://172.17.21.51:9000
