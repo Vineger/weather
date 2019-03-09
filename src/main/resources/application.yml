@@ -6,3 +6,6 @@ spring:
 ---
 hdfs:
   url: hdfs://172.17.21.51:9000
+
+server:
+  port: 80

@@ -45,7 +45,7 @@ public class WeatherDayTask {
     private String getWeatherHourFileName () {
         LocalDateTime today = LocalDateTime.now();
         LocalDate yesterday = today.minusDays(1).toLocalDate();
-        String fileName = yesterday.format(DateTimeFormatter.ofPattern("uuuu_MM_d"));
+        String fileName = yesterday.format(DateTimeFormatter.ofPattern("uuuu_MM_dd"));
         return fileName;
     }
 }

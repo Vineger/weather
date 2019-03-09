@@ -71,7 +71,7 @@ public class WeatherHourTask {
         //写入HDFS
         String fileName = nineHoursAgo.format(DateTimeFormatter.ofPattern("uuuu_MM_dd"));
         String path = "/weather/hour/" + fileName;
-        hdfsService.appendFile(path, weather.toString() + "/n");
+        hdfsService.appendFile(path, weather.toString() + "\n");
 
         //存入缓存
         cache.put("now", weather);
