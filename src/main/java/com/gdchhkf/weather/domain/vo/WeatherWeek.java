@@ -2,19 +2,18 @@ package com.gdchhkf.weather.domain.vo;
 
 import lombok.Data;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
- * @ClassName WeatherWeek
- * @Description TODO
- * @Author gdchhkf@163.com
- * @Date 2019/3/3 22:35
- * @Version 1.0
+ * 传回前端的数据容器
+ * @author gdchhkf@163.com
+ * @version 1.0
  **/
 @Data
 public class WeatherWeek {
-    private Map weatherMap = new HashMap();
+    private List<Map> weatherMap = new ArrayList<>();
     private float temMax;
     private float temMin;
     //降水量

@@ -3,6 +3,11 @@ package com.gdchhkf.weather.domain;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.Data;
 
+/**
+ * 从HDFS文件中读取气象数据所使用的数据容器
+ * @author gdchhkf@163.com
+ * @version 1.0
+ **/
 @Data
 public class Weather {
 

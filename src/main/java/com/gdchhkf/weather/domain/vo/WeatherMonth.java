@@ -1,20 +1,19 @@
 package com.gdchhkf.weather.domain.vo;
 
-import com.gdchhkf.weather.domain.Weather;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
- * @ClassName WeatherMonth
- * @Description TODO
- * @Author gdchhkf@163.com
- * @Date 2019/3/3 22:35
- * @Version 1.0
+ * 传回前端的数据容器
+ * @author gdchhkf@163.com
+ * @version 1.0
  **/
 @Data
 public class WeatherMonth {
-    private List<Weather> list;
+    private List<Map> list = new ArrayList<>();
     private float temMax;
     private float temMin;
     //降水量
