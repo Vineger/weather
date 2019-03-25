@@ -25,11 +25,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
- * @ClassName MapReduceService
- * @Description TODO
- * @Author gdchhkf@163.com
- * @Date 2019/3/1 10:49
- * @Version 1.0
+ * MapReduce 服务
+ * 提供创建DayTask, WeekTask, MonthTask
+ *
+ * @author gdchhkf@163.com
+ * @version 1.0
  **/
 @Service
 public class MapReduceServiceImpl implements MapReduceService {
@@ -40,14 +40,15 @@ public class MapReduceServiceImpl implements MapReduceService {
     private Configuration conf;
 
     /**
-     * @Author gdchhkf@163.com
-     * @Description
-     * @Date 12:44 2019/3/2
-     * @Param [srcFile, desFile]
-     * @return boolean
+     * 创建 DayJob 分析过去24小时的气象数据
+     * 具体的Mapper逻辑 {@link WeatherDayMapper}
+     * 具体的Reducer逻辑 {@link WeatherWeekReducer}
+     * @author gdchhkf@163.com
+     * @param  srcFileName 要处理的hour文件的文件名
+     * @return boolean 任务创建并提交是否成功
      **/
-    public boolean createWeatherDayJob(String srcFile) {
-        String inputFile = "/weather/hour/" + srcFile;
+    public boolean createWeatherDayJob(String srcFileName) {
+        String inputFile = "/weather/hour/" + srcFileName;
         String outputTmp = "/weather/day/tmp/";
         String outputDir = "/weather/day/";
 
@@ -55,20 +56,21 @@ public class MapReduceServiceImpl implements MapReduceService {
         setJob(job, WeatherDayMapper.class, WeatherDayReducer.class);
         setSingleInput(job, inputFile);
         setOutputPath(job, outputTmp);
-        return submitJob(job, outputDir, outputTmp, srcFile);
+        return submitJob(job, outputDir, outputTmp, srcFileName);
 
     }
 
     /**
-     * @Author gdchhkf@163.com
-     * @Description
-     * @Date 16:00 2019/3/3
-     * @Param [files]
-     * @return boolean
+     * 创建WeekTask, 分析过去一周的气象数据
+     * Mapper的具体逻辑 {@link WeatherWeekMapper}
+     * Reducer的具体逻辑 {@link WeatherWeekReducer}
+     * @author gdchhkf@163.com
+     * @param files 过去一周中确实存在的文件
+     * @return boolean 任务创建并提交是否成功
      **/
     public boolean createWeatherWeekJob(List<String> files) {
         LocalDate today = LocalDate.now();
-        String newFileName = today.format(DateTimeFormatter.ofPattern("uuuu_mm_dd"));
+        String newFileName = today.format(DateTimeFormatter.ofPattern("uuuu_MM_dd"));
         String outputTmp = "/weather/week/tmp/";
         String outputDir = "/weather/week/";
 
@@ -81,10 +83,9 @@ public class MapReduceServiceImpl implements MapReduceService {
 
 
     /**
-     * @Author gdchhkf@163.com
-     * @Description
-     * @Date 16:06 2019/3/3
-     * @Param [files]
+     *
+     * @author gdchhkf@163.com
+     * @param files
      * @return boolean
      **/
     public boolean createWeatherMonthJob(List<String> files) {
@@ -193,7 +194,7 @@ public class MapReduceServiceImpl implements MapReduceService {
         boolean result = false;
         try {
             //判断HDFS中输出目录是否存在, 存在则将其删除
-            hdfsService.deleteDir(outputDir);
+            hdfsService.deleteDir(outputTmp);
             result = job.waitForCompletion(true);
             //迁移处理出来的结果文件
             hdfsService.renameFile(outputTmp, outputDir, newFileName);

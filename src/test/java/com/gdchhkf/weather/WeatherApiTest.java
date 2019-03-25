@@ -107,7 +107,7 @@ public class WeatherApiTest {
 
         try{
             //判断HDFS中输出目录是否存在, 存在则将其删除
-            hdfsService.deleteDir(outputDir);
+            hdfsService.deleteDir(outputTmp);
 
             job = Job.getInstance(conf, "analysis weather hour");
             job.setJarByClass(MapReduceServiceImpl.class);

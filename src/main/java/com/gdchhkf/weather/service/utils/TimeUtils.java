@@ -35,7 +35,7 @@ public class TimeUtils {
      **/
     public LocalDateTime getLastMonday() {
         LocalDateTime today = LocalDateTime.now();
-        return today.minusDays(today.getDayOfWeek().getValue());
+        return today.minusDays(today.getDayOfWeek().getValue() - 1).minusDays(7);
     }
 
     /**
@@ -100,12 +100,12 @@ public class TimeUtils {
      **/
     public List<String> getExistsPastWeekFile() {
         List<String> files = new ArrayList<>();
-        LocalDateTime nextMonday = getNextMonday();
+        LocalDateTime lastMonday = getLastMonday();
 
         //循环判断文件是否存在
-        for (int i = 7; i > 0; i--){
-            LocalDateTime temp = nextMonday.minusDays(i);
-            String fileName = temp.format(DateTimeFormatter.ofPattern("uuuu_mm_dd"));
+        for (int i = 0; i <= 6; i++){
+            LocalDateTime temp = lastMonday.plusDays(i);
+            String fileName = temp.format(DateTimeFormatter.ofPattern("uuuu_MM_dd"));
             String file = "/weather/day/" + fileName;
             //利用FileSystem的API判断文件是否存在
             if(hdfsService.exists(file)) {
@@ -113,18 +113,5 @@ public class TimeUtils {
             }
         }
         return files;
-    }
-
-    /**
-     * @Author gdchhkf@163.com
-     * @Description 下周一 9点30分
-     * @Date 15:52 2019/3/3
-     * @Param []
-     * @return java.time.LocalDateTime
-     **/
-    private LocalDateTime getNextMonday() {
-        LocalDateTime today = LocalDateTime.now();
-        int dayOfWeek =  today.getDayOfWeek().getValue();
-        return today.plusDays(7 + 1 - dayOfWeek).withHour(10).withMinute(0).withSecond(0);
     }
 }
