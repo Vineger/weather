@@ -1,14 +1,8 @@
-spring:
-  profiles: dev
-
-server:
-  port: 8080
-
-hdfs:
-  url: hdfs://192.168.254.100:9000
----
-hdfs:
-  url: hdfs://172.17.21.51:9000
-
 server:
   port: 80
+
+---
+spring:
+  profiles: dev
+server:
+  port: 8080
