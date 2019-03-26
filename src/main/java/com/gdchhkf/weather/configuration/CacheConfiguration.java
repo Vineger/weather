@@ -1,6 +1,5 @@
 package com.gdchhkf.weather.configuration;
 
-import com.gdchhkf.weather.domain.Weather;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,7 +17,7 @@ import java.util.Map;
 public class CacheConfiguration {
 
     @Bean(name = "cache")
-    public Map<String, Weather> cache(){
-        return new HashMap<>();
+    public Map cache(){
+        return new HashMap();
     }
 }

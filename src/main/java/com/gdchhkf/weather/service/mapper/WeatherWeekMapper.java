@@ -25,7 +25,7 @@ public class WeatherWeekMapper extends Mapper<Object, Text, Text, FloatWritable>
 
             if(tempKey.equals(Weather.TEM_MAX) ||
                 tempKey.equals(Weather.TEM_MIN) ||
-                tempKey.equals(Weather.PRS)){
+                tempKey.equals(Weather.PRE)){
 
                 float tempValue = Float.parseFloat(tokenizer.nextToken());
                 context.write(new Text(tempKey), new FloatWritable(tempValue));

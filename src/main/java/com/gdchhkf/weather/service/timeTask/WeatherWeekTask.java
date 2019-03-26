@@ -1,5 +1,7 @@
 package com.gdchhkf.weather.service.timeTask;
 
+import com.gdchhkf.weather.domain.vo.WeatherWeek;
+import com.gdchhkf.weather.service.HDFSService;
 import com.gdchhkf.weather.service.MapReduceService;
 import com.gdchhkf.weather.service.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName WeatherWeektask
@@ -16,12 +19,16 @@ import java.util.List;
  * @Version 1.0
  **/
 @Component
-public class WeatherWeektask {
+public class WeatherWeekTask {
 
     @Autowired
     private TimeUtils utils;
     @Autowired
+    private HDFSService hdfsService;
+    @Autowired
     private MapReduceService mapReduceService;
+    @Autowired
+    private Map cache;
 
     /**
      * @Author gdchhkf@163.com
@@ -35,5 +42,9 @@ public class WeatherWeektask {
     private void weatherWeekListener(){
         List<String> files = utils.getExistsPastWeekFile();
         mapReduceService.createWeatherWeekJob(files);
+        WeatherWeek weatherWeek = new WeatherWeek();
+        weatherWeek.setWeatherMap(hdfsService.readLastWeekFiles());
+        hdfsService.setLastWeekResult(weatherWeek);
+        cache.put("week", weatherWeek);
     }
 }

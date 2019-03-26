@@ -41,7 +41,7 @@ public class HDFSServiceImpl implements HDFSService {
      **/
     public void setLastWeekResult (WeatherWeek week) {
         //获得MapReduce 统计出来的数据
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu_mm_dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu_MM_dd");
         String fileName = utils.getLastMonday().format(formatter);
         String file = "/weather/week/" + fileName;
         String temp = readFile(file);
@@ -72,16 +72,17 @@ public class HDFSServiceImpl implements HDFSService {
     public List<Map> readLastWeekFiles () {
         List<String> files = utils.getExistsPastWeekFile();
         List<Map> weatherList = new ArrayList<>();
-        Map weather = new HashMap();
 
         for (String file : files) {
             String temp = readFile(file);
             StringTokenizer tokenizer = new StringTokenizer(temp);
+            Map weather = new HashMap();
             while (tokenizer.hasMoreTokens()) {
                 String key = tokenizer.nextToken();
                 String value = tokenizer.nextToken();
                 weather.put(key, value);
             }
+            weatherList.add(weather);
         }
         return weatherList;
     }

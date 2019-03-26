@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gdchhkf.weather.domain.Weather;
 import com.gdchhkf.weather.service.HDFSService;
-import com.gdchhkf.weather.service.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -44,10 +43,8 @@ public class WeatherHourTask {
     @Autowired
     private ObjectMapper mapper;
     @Autowired
-    private TimeUtils utils;
-    @Autowired
     @Qualifier("cache")
-    private Map<String, Weather> cache;
+    private Map cache;
 
     /**
      * @Author gdchhkf@163.com

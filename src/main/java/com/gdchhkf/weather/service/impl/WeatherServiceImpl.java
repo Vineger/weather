@@ -16,7 +16,7 @@ public class WeatherServiceImpl implements WeatherService {
 
     @Autowired
     @Qualifier("cache")
-    private Map<String, Weather> cache;
+    private Map cache;
     @Autowired
     private HDFSService hdfsService;
 
@@ -30,7 +30,7 @@ public class WeatherServiceImpl implements WeatherService {
      * @return com.gdchhkf.weather.domain.Weather
      **/
     public Weather getWeatherNow() {
-        return cache.get("now");
+        return (Weather) cache.get("now");
     }
 
     /**
@@ -42,6 +42,9 @@ public class WeatherServiceImpl implements WeatherService {
      * @return com.gdchhkf.weather.domain.vo.WeatherWeek
      **/
     public WeatherWeek getWeatherWeek() {
+        if (cache.get("week") != null) {
+            return (WeatherWeek) cache.get("week");
+        }
         WeatherWeek weatherWeek = new WeatherWeek();
         weatherWeek.setWeatherMap(hdfsService.readLastWeekFiles());
         hdfsService.setLastWeekResult(weatherWeek);
