@@ -2,11 +2,11 @@ package com.gdchhkf.weather;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gdchhkf.weather.domain.Weather;
-import com.gdchhkf.weather.service.HDFSService;
-import com.gdchhkf.weather.service.impl.MapReduceServiceImpl;
-import com.gdchhkf.weather.service.mapper.WeatherDayMapper;
-import com.gdchhkf.weather.service.reducer.WeatherDayReducer;
+import com.gdchhkf.weather.hadoop.FileOperation;
+import com.gdchhkf.weather.web.domain.Weather;
+import com.gdchhkf.weather.hadoop.MapReduceOperation;
+import com.gdchhkf.weather.hadoop.mapper.WeatherDayMapper;
+import com.gdchhkf.weather.hadoop.reducer.WeatherDayReducer;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -28,13 +28,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * @ClassName WeatherApiTest
- * @Description TODO
- * @Author gdchhkf@163.com
- * @Date 2019/2/28 17:40
- * @Version 1.0
- **/
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("dev")
@@ -55,7 +48,7 @@ public class WeatherApiTest {
     @Autowired
     private ObjectMapper mapper;
     @Autowired
-    private HDFSService hdfsService;
+    private FileOperation fileOperation;
 
 
     @Test
@@ -63,7 +56,7 @@ public class WeatherApiTest {
         System.out.println(LocalDateTime.now().getDayOfWeek().getValue());
 
 //        Map<String, String> map = new HashMap<>();
-//        String result = hdfsService.readFile("/demo/day/aaaa");
+//        String result = fileOperation.readFile("/demo/day/aaaa");
 //        StringTokenizer tokenizer = new StringTokenizer(result);
 //        while (tokenizer.hasMoreTokens()){
 //            map.put(tokenizer.nextToken(), tokenizer.nextToken());
@@ -107,10 +100,10 @@ public class WeatherApiTest {
 
         try{
             //判断HDFS中输出目录是否存在, 存在则将其删除
-            hdfsService.deleteDir(outputTmp);
+            fileOperation.deleteDir(outputTmp);
 
             job = Job.getInstance(conf, "analysis weather hour");
-            job.setJarByClass(MapReduceServiceImpl.class);
+            job.setJarByClass(MapReduceOperation.class);
             job.setMapperClass(WeatherDayMapper.class);
             job.setCombinerClass(WeatherDayReducer.class);
             job.setReducerClass(WeatherDayReducer.class);
@@ -122,7 +115,7 @@ public class WeatherApiTest {
             result = job.waitForCompletion(true);
 
             //迁移处理出来的文件
-            hdfsService.renameFile(outputTmp, outputDir, "/aaaa");
+            fileOperation.renameFile(outputTmp, outputDir, "/aaaa");
 
         } catch (IOException | InterruptedException | ClassNotFoundException e){
             e.printStackTrace();
