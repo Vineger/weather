@@ -24,10 +24,13 @@ public class IPFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         // 获取客户端真实IP
         if (request.getHeader("x-forwarded-for") == null){
-            log.trace(request.getRemoteAddr());
+            log.trace(request.getRemoteAddr() + "  ---  "
+                    + request.getRemoteHost() + "  ---  "
+                    + request.getRemoteUser());
         } else {
             log.trace(request.getHeader("x-forwarded-for"));
         }
 
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 }

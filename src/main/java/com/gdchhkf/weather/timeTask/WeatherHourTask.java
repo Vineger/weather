@@ -51,13 +51,14 @@ public class WeatherHourTask {
         String content = restTemplate.getForObject(apiUrl, String.class);
         Weather weather = readWeatherFromJson(content);
 
+        //存入缓存
+        cache.put("now", weather);
+
         //写入HDFS
         String fileName = nineHoursAgo.format(DateTimeFormatter.ofPattern(TimeUtils.DAY));
         String path = FileOperation.HOUR + fileName;
         fileOperation.appendFile(path, weather.toString() + "\n");
 
-        //存入缓存
-        cache.put("now", weather);
     }
 
     private Weather readWeatherFromJson(String content){

@@ -52,9 +52,12 @@
         </rollingPolicy>
     </appender>
 
-    <appender name="TimeTaskLog"
+    <appender name="WarnLog"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOGS}/TimeTask-logger.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>warn</level>
+        </filter>
+        <file>${LOGS}/warn-logger.log</file>
         <encoder
                 class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
@@ -63,7 +66,7 @@
         <rollingPolicy
                 class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- rollover daily and when the file reaches 10 MegaBytes -->
-            <fileNamePattern>${LOGS}/archived/TimeTask-logger-%d{yyyy-MM-dd}.%i.log
+            <fileNamePattern>${LOGS}/archived/warn-logger-%d{yyyy-MM-dd}.%i.log
             </fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -74,15 +77,13 @@
 
     <!-- LOG everything at INFO level -->
     <root level="info">
+        <appender-ref ref="Console" />
         <appender-ref ref="RollingFile" />
+        <appender-ref ref="WarnLog" />
     </root>
 
     <!-- LOG "com.gdchhkf.weather.web.filter*" at TRACE level -->
     <logger name="com.gdchhkf.weather.web.filter" level="trace" additivity="false">
         <appender-ref ref="FilterLog" />
-    </logger>
-
-    <logger name="com.gdchhkf.weather.timeTask" level="warn" additivity="false">
-        <appender-ref ref="TimeTaskLog" />
     </logger>
 </configuration>
