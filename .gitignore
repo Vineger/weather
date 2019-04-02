@@ -4,3 +4,12 @@ target/
 
 # Java files
 *.class
+
+# vue page
+*.js
+*.map
+*.html
+*.css
+*.woff
+*.ttf
+*.ico

@@ -17,7 +17,7 @@ public class WeatherMonthTask {
     @Autowired
     private FileOperation fileOperation;
 
-    @Scheduled(cron = "0 0 10 1 1/1 ?")
+    @Scheduled(cron = "0 0 11 1 1/1 ?")
     public void weatherMonthListener() {
         List<String> files = fileOperation.getExistsPastMonthFile();
         mapReduceOperation.createWeatherMonthJob(files);

@@ -21,7 +21,7 @@ public class WeatherWeekTask {
     @Autowired
     private Map cache;
 
-    @Scheduled(cron = "0 0 10 ? * MON")
+    @Scheduled(cron = "0 30 10 ? * MON")
     private void weatherWeekListener(){
         List<String> files = fileOperation.getExistsPastWeekFile();
         mapReduceOperation.createWeatherWeekJob(files);
