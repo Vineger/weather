@@ -32,58 +32,11 @@
         </rollingPolicy>
     </appender>
 
-    <appender name="FilterLog"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOGS}/IPFilter-logger.log</file>
-        <encoder
-                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
-        </encoder>
-
-        <rollingPolicy
-                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- rollover daily and when the file reaches 10 MegaBytes -->
-            <fileNamePattern>${LOGS}/archived/IPFilter-logger-%d{yyyy-MM-dd}.%i.log
-            </fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy
-                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>10MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-        </rollingPolicy>
-    </appender>
-
-    <appender name="WarnLog"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>warn</level>
-        </filter>
-        <file>${LOGS}/warn-logger.log</file>
-        <encoder
-                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
-        </encoder>
-
-        <rollingPolicy
-                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- rollover daily and when the file reaches 10 MegaBytes -->
-            <fileNamePattern>${LOGS}/archived/warn-logger-%d{yyyy-MM-dd}.%i.log
-            </fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy
-                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>10MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-        </rollingPolicy>
-    </appender>
 
     <!-- LOG everything at INFO level -->
     <root level="info">
         <appender-ref ref="Console" />
         <appender-ref ref="RollingFile" />
-        <appender-ref ref="WarnLog" />
     </root>
 
-    <!-- LOG "com.gdchhkf.weather.web.filter*" at TRACE level -->
-    <logger name="com.gdchhkf.weather.web.filter" level="trace" additivity="false">
-        <appender-ref ref="FilterLog" />
-    </logger>
 </configuration>

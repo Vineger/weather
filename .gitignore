@@ -4,6 +4,8 @@ target/
 
 # Java files
 *.class
+*.out
+*.log
 
 # vue page
 *.js

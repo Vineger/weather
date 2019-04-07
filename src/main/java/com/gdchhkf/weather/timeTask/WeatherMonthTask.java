@@ -1,6 +1,7 @@
 package com.gdchhkf.weather.timeTask;
 
 import com.gdchhkf.weather.hadoop.FileOperation;
+import com.gdchhkf.weather.hadoop.FileType;
 import com.gdchhkf.weather.hadoop.MapReduceOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,7 +20,7 @@ public class WeatherMonthTask {
 
     @Scheduled(cron = "0 0 11 1 1/1 ?")
     public void weatherMonthListener() {
-        List<String> files = fileOperation.getExistsPastMonthFile();
+        List<String> files = fileOperation.getExistsFile(FileType.MONTH);
         mapReduceOperation.createWeatherMonthJob(files);
     }
 

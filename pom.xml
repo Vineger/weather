@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.gdchhkf</groupId>
     <artifactId>weather</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.3</version>
     <name>weather</name>
     <description>Demo project for Spring Boot</description>
 
@@ -42,6 +42,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <!--用以生成Excel-->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>4.0.1</version>
         </dependency>
 
         <!--引入Hadoop的依赖jar包-->

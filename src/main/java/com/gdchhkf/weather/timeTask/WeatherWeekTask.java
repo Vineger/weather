@@ -1,6 +1,7 @@
 package com.gdchhkf.weather.timeTask;
 
 import com.gdchhkf.weather.hadoop.FileOperation;
+import com.gdchhkf.weather.hadoop.FileType;
 import com.gdchhkf.weather.hadoop.MapReduceOperation;
 import com.gdchhkf.weather.web.domain.vo.WeatherWeek;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class WeatherWeekTask {
 
     @Scheduled(cron = "0 30 10 ? * MON")
     private void weatherWeekListener(){
-        List<String> files = fileOperation.getExistsPastWeekFile();
+        List<String> files = fileOperation.getExistsFile(FileType.WEEK);
         mapReduceOperation.createWeatherWeekJob(files);
 
         WeatherWeek weatherWeek = new WeatherWeek();

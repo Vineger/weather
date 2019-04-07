@@ -13,7 +13,7 @@ import java.util.Map;
  **/
 @Data
 public class WeatherWeek {
-    private List<Map> weatherMap = new ArrayList<>();
+    private List<Map<String, String>> weatherMap = new ArrayList<>();
     private float temMax;
     private float temMin;
     //降水量

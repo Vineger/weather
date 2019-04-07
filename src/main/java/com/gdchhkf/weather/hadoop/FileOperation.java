@@ -28,35 +28,23 @@ public class FileOperation {
     public static final String MONTH_TMP = "/weather/month/tmp/";
     public static final String HOUR = "/weather/hour/";
 
-    public List<String> getExistsPastMonthFile() {
+    public List<String> getExistsFile(FileType type) {
         List<String> files = new ArrayList<>();
-        LocalDateTime dateOfMonth = LocalDateTime.now().minusMonths(1);
+        List<String> dates = null;
 
-        do {
-            String fileName = dateOfMonth.format(DateTimeFormatter.ofPattern(TimeUtils.MONTH));
+        if(type == FileType.WEEK) {
+            dates = TimeUtils.getLastWeek();
+        } else if (type == FileType.MONTH) {
+            dates = TimeUtils.getLastMonth();
+        }
+
+        for (String fileName : dates) {
             String file = DAY + fileName;
-            if(exists(file)) {
-                files.add(file);
-            }
-            dateOfMonth = dateOfMonth.plusDays(1);
-        } while (dateOfMonth.getDayOfMonth() != 1);
-        return files;
-    }
-
-    public List<String> getExistsPastWeekFile() {
-        List<String> files = new ArrayList<>();
-        LocalDateTime lastMonday = TimeUtils.getLastMonday();
-
-        //循环判断文件是否存在
-        for (int i = 0; i <= 6; i++){
-            LocalDateTime temp = lastMonday.plusDays(i);
-            String fileName = temp.format(DateTimeFormatter.ofPattern(TimeUtils.DAY));
-            String file = DAY + fileName;
-            //利用FileSystem的API判断文件是否存在
             if(exists(file)) {
                 files.add(file);
             }
         }
+
         return files;
     }
 
@@ -88,9 +76,9 @@ public class FileOperation {
     }
     
 
-    public List<Map> readLastWeekFiles () {
-        List<String> files = getExistsPastWeekFile();
-        List<Map> weatherList = new ArrayList<>();
+    public List<Map<String, String>> readLastWeekFiles () {
+        List<String> files = getExistsFile(FileType.WEEK);
+        List<Map<String, String>> weatherList = new ArrayList<>();
 
         for (String file : files) {
             Map<String, String> weather = new HashMap<>();
