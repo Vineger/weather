@@ -13,7 +13,7 @@ import java.util.Map;
  **/
 @Data
 public class WeatherMonth {
-    private List<Map> list = new ArrayList<>();
+    private List<Map<String,String>> weatherDates = new ArrayList<>();
     private float temMax;
     private float temMin;
     //降水量

@@ -28,7 +28,7 @@ public class WeatherWeekTask {
         mapReduceOperation.createWeatherWeekJob(files);
 
         WeatherWeek weatherWeek = new WeatherWeek();
-        weatherWeek.setWeatherMap(fileOperation.readLastWeekFiles());
+        weatherWeek.setWeatherMap(fileOperation.readFiles(FileType.WEEK));
         fileOperation.setLastWeekResult(weatherWeek);
         cache.put("week", weatherWeek);
     }

@@ -42,10 +42,10 @@ public class TimeUtils {
      */
     public static List<String> getLastMonth() {
         List<String> dates = new ArrayList<>();
-        LocalDateTime dateOfMonth = LocalDateTime.now().minusMonths(1);
+        LocalDateTime dateOfMonth = LocalDateTime.now().withDayOfMonth(1).minusMonths(1);
 
         do {
-            String data = dateOfMonth.format(DateTimeFormatter.ofPattern(TimeUtils.MONTH));
+            String data = dateOfMonth.format(DateTimeFormatter.ofPattern(TimeUtils.DAY));
             dates.add(data);
             dateOfMonth = dateOfMonth.plusDays(1);
         } while (dateOfMonth.getDayOfMonth() != 1);

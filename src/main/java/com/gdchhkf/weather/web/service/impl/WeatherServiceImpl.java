@@ -1,5 +1,6 @@
 package com.gdchhkf.weather.web.service.impl;
 
+import com.gdchhkf.weather.hadoop.FileType;
 import com.gdchhkf.weather.web.domain.Weather;
 import com.gdchhkf.weather.hadoop.FileOperation;
 import com.gdchhkf.weather.web.domain.vo.WeatherMonth;
@@ -30,7 +31,7 @@ public class WeatherServiceImpl implements WeatherService {
             return (WeatherWeek) cache.get("week");
         }
         WeatherWeek weatherWeek = new WeatherWeek();
-        weatherWeek.setWeatherMap(fileOperation.readLastWeekFiles());
+        weatherWeek.setWeatherMap(fileOperation.readFiles(FileType.WEEK));
         fileOperation.setLastWeekResult(weatherWeek);
         cache.put("week", weatherWeek);
         return weatherWeek;
@@ -38,7 +39,12 @@ public class WeatherServiceImpl implements WeatherService {
 
 
     public WeatherMonth getWeatherMonth () {
-
-        return null;
+        if (cache.get("month") != null) {
+            return (WeatherMonth) cache.get("month");
+        }
+        WeatherMonth weatherMonth = new WeatherMonth();
+        weatherMonth.setWeatherDates(fileOperation.readFiles(FileType.MONTH));
+        cache.put("month", weatherMonth);
+        return weatherMonth;
     }
 }

@@ -83,7 +83,7 @@ public class MapReduceOperation {
         Job job = getInstance("analysis weather month");
         boolean result;
         // 由于 Month 和 Day 的处理逻辑相同
-        // 所有使用相同的 Mapper 和 Reducer
+        // 所以使用相同的 Mapper 和 Reducer
         setJob(job, WeatherWeekMapper.class, WeatherWeekReducer.class);
         setMultipleInputs(job, files);
         setOutputPath(job, FileOperation.MONTH_TMP);
@@ -101,7 +101,6 @@ public class MapReduceOperation {
         }
         return job;
     }
-
 
     private void setJob(Job job, Class<? extends Mapper> mapper, Class<? extends Reducer> reducer) {
 
@@ -131,6 +130,16 @@ public class MapReduceOperation {
         FileOutputFormat.setOutputPath(job, new Path(outputTmp));
     }
 
+    /**
+     *
+     * @param job MapReduce中每一个提交的任务所对应的实例
+     * @param outputDir 处理后的数据结果真正存放的位置
+     * @param outputTmp 由于MapReduce的特性，处理后的数据暂存的位置
+     * @param newFileName 处理后的数据存放在 outputDir 中真正的文件名
+     * @return
+     *   true 代表任务提交成功
+     *   false 代表任务提交失败
+     */
     private boolean submitJob(Job job, String outputDir, String outputTmp, String newFileName) {
         boolean result = false;
         try {

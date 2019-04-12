@@ -76,8 +76,8 @@ public class FileOperation {
     }
     
 
-    public List<Map<String, String>> readLastWeekFiles () {
-        List<String> files = getExistsFile(FileType.WEEK);
+    public List<Map<String, String>> readFiles(FileType type) {
+        List<String> files = getExistsFile(type);
         List<Map<String, String>> weatherList = new ArrayList<>();
 
         for (String file : files) {

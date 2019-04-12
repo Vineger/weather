@@ -36,7 +36,6 @@ public class WeatherHourTask {
         LocalDateTime nineHoursAgo = LocalDateTime.now().minusHours(9).withMinute(0).withSecond(0);
         String str = nineHoursAgo.format(DateTimeFormatter.ofPattern(TimeUtils.HOUR));
 
-        //构造url, 并发出请求
         String url = "http://api.data.cma.cn:8090/api?" +
                 "userId=551236215397hG3d9" +
                 "&pwd=FqeJ8xS" +
@@ -46,6 +45,7 @@ public class WeatherHourTask {
                 "&timeRange=[%s,%s]" +
                 "&staIDs=59488" +
                 "&elements=TEM,TEM_Max,TEM_Min,tigan,PRS,PRS_Sea,VAP,RHU,windpower,PRE_1h,VIS,CLO_Cov,CLO_Cov_Low,CLO_COV_LM,WEP_Now,Station_Id_C,Year,Mon,Day,Hour";
+        //构造url, 并发出请求
         String apiUrl = String.format(url, str, str);
         RestTemplate restTemplate = restBuilder.build();
         String content = restTemplate.getForObject(apiUrl, String.class);
