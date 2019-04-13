@@ -1,13 +1,16 @@
 package com.gdchhkf.weather.hadoop.configuration;
 
+import lombok.extern.java.Log;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 
 
 import java.io.IOException;
 
-
+@Log
 public class HadoopConfiguration {
+
+    private static FileSystem fileSystem;
 
     public static Configuration getConfiguration(){
         Configuration conf = new org.apache.hadoop.conf.Configuration();
@@ -20,8 +23,18 @@ public class HadoopConfiguration {
         return conf;
     }
 
-    public static FileSystem getFileSystem() throws IOException{
+    public static FileSystem getFileSystem(){
         Configuration conf = getConfiguration();
-        return FileSystem.get(conf);
+        if(fileSystem == null) {
+            try {
+                fileSystem = FileSystem.get(conf);
+            } catch (IOException e) {
+                log.warning("与Hadoop连接发送错误");
+                e.printStackTrace();
+            }
+        } else {
+            return fileSystem;
+        }
+        return fileSystem;
     }
 }

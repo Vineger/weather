@@ -138,9 +138,8 @@ public class FileOperation {
 
     private boolean exists(String file) {
         boolean result = false;
-
-        try (FileSystem fileSystem = HadoopConfiguration.getFileSystem())
-        {
+        FileSystem fileSystem = HadoopConfiguration.getFileSystem();
+        try {
             result = fileSystem.exists(new Path(file));
         } catch(IOException e){
             e.printStackTrace();
@@ -151,7 +150,8 @@ public class FileOperation {
 
     private String readFile(String fileName){
         String result = "";
-        try (FileSystem fileSystem = HadoopConfiguration.getFileSystem()){
+        FileSystem fileSystem = HadoopConfiguration.getFileSystem();
+        try {
             FSDataInputStream input = fileSystem.open(new Path(fileName));
             result = IOUtils.toString(input, "UTF-8");
         } catch (IOException e){
@@ -164,9 +164,9 @@ public class FileOperation {
     public void appendFile(String filePath, String content) {
         Path path = new Path(filePath);
         createFile(path);
+        FileSystem fileSystem = HadoopConfiguration.getFileSystem();
 
         try (
-                FileSystem fileSystem = HadoopConfiguration.getFileSystem();
                 FSDataOutputStream outputStream = fileSystem.append(path);
                 PrintWriter writer = new PrintWriter(outputStream)
         ){
@@ -180,7 +180,8 @@ public class FileOperation {
     }
 
     public void renameFile(String srcDir, String desDir, String newFileName){
-        try (FileSystem fileSystem = HadoopConfiguration.getFileSystem()){
+        FileSystem fileSystem = HadoopConfiguration.getFileSystem();
+        try {
             fileSystem.rename(
                     new Path(srcDir + "part-r-00000"),
                     new Path(desDir + newFileName));
@@ -190,7 +191,8 @@ public class FileOperation {
     }
 
     public void deleteDir(String dir) {
-        try (FileSystem fileSystem = HadoopConfiguration.getFileSystem()){
+        FileSystem fileSystem = HadoopConfiguration.getFileSystem();
+        try {
             fileSystem.delete(new Path(dir), true);
         }catch (IOException e){
             e.printStackTrace();
@@ -198,7 +200,8 @@ public class FileOperation {
     }
 
     private void createFile(Path path){
-        try (FileSystem fileSystem = HadoopConfiguration.getFileSystem()) {
+        FileSystem fileSystem = HadoopConfiguration.getFileSystem();
+        try {
             if(!fileSystem.exists(path)){
                 fileSystem.createNewFile(path);
             }
