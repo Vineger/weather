@@ -5,9 +5,11 @@ import com.gdchhkf.weather.web.domain.Weather;
 import com.gdchhkf.weather.web.domain.vo.WeatherMonth;
 import com.gdchhkf.weather.web.domain.vo.WeatherWeek;
 import com.gdchhkf.weather.web.service.ExcelService;
+import com.gdchhkf.weather.web.service.ExcelType;
 import com.gdchhkf.weather.web.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -38,13 +40,27 @@ public class WeatherController {
         return weatherService.getWeatherWeek();
     }
 
+    @GetMapping("/custom/{start}/{end}")
+    public void DisplayDateDownload(@PathVariable String start, @PathVariable String end,
+                                    HttpServletResponse response) {
+        String fileName = TimeUtils.getLastMonday().format(DateTimeFormatter.ofPattern(TimeUtils.DAY));
+        response.addHeader("Content-Disposition", "attachment;fileName=" + fileName + ".xls");
+        response.setContentType("application/x-download");
+        try (OutputStream outputStream = response.getOutputStream()) {
+            excelService.getCustomWeatherExcel(outputStream, start, end);
+            outputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @GetMapping("/week/excel")
     public void WeatherWeekExcelDownload(HttpServletResponse response) {
         String fileName = TimeUtils.getLastMonday().format(DateTimeFormatter.ofPattern(TimeUtils.DAY));
         response.addHeader("Content-Disposition", "attachment;fileName=" + fileName + ".xls");
         response.setContentType("application/x-download");
         try (OutputStream outputStream = response.getOutputStream()) {
-            excelService.getWeatherWeekExcel(outputStream);
+            excelService.getWeatherWeekExcel(outputStream, ExcelType.WEEK);
             outputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -59,6 +75,19 @@ public class WeatherController {
     @GetMapping("/month")
     public WeatherMonth weatherMonth() {
         return weatherService.getWeatherMonth();
+    }
+
+    @GetMapping("/month/excel")
+    public void WeatherMonthExcelDownload(HttpServletResponse response) {
+        String fileName = TimeUtils.getLastMonthFisrtDay().format(DateTimeFormatter.ofPattern(TimeUtils.DAY));
+        response.addHeader("Content-Disposition", "attachment;fileName=" + fileName + ".xls");
+        response.setContentType("application/x-download");
+        try (OutputStream outputStream = response.getOutputStream()) {
+            excelService.getWeatherWeekExcel(outputStream, ExcelType.MONTH);
+            outputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

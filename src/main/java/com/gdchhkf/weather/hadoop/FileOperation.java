@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -36,6 +37,8 @@ public class FileOperation {
             dates = TimeUtils.getLastWeek();
         } else if (type == FileType.MONTH) {
             dates = TimeUtils.getLastMonth();
+        } else if (type == FileType.CUSTOM) {
+
         }
 
         for (String fileName : dates) {
@@ -43,6 +46,28 @@ public class FileOperation {
             if(exists(file)) {
                 files.add(file);
             }
+        }
+
+        return files;
+    }
+
+    public List<String> getExistsFile(FileType type, String startStr, String endStr) {
+        List<String> files = new ArrayList<>();
+        List<String> dates = null;
+
+        if(type == FileType.CUSTOM) {
+            LocalDate start = TimeUtils.parseToLocalDate(startStr);
+            LocalDate end = TimeUtils.parseToLocalDate(endStr);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TimeUtils.DAY);
+            do {
+                String path = DAY + start.format(formatter);
+                if (exists(path)) {
+                    files.add(path);
+                }
+                start = start.plusDays(1);
+            } while (end.compareTo(start) >= 0);
+        } else {
+            files = getExistsFile(type);
         }
 
         return files;
@@ -74,10 +99,26 @@ public class FileOperation {
             }
         }
     }
-    
 
     public List<Map<String, String>> readFiles(FileType type) {
         List<String> files = getExistsFile(type);
+        List<Map<String, String>> weatherList = new ArrayList<>();
+
+        for (String file : files) {
+            Map<String, String> weather = new HashMap<>();
+            String temp = readFile(file);
+            StringTokenizer tokenizer = new StringTokenizer(temp);
+            while (tokenizer.hasMoreTokens()) {
+                String key = tokenizer.nextToken();
+                String value = tokenizer.nextToken();
+                weather.put(key, value);
+            }
+            weatherList.add(weather);
+        }
+        return weatherList;
+    }
+
+    public List<Map<String, String>> readFiles(List<String> files) {
         List<Map<String, String>> weatherList = new ArrayList<>();
 
         for (String file : files) {

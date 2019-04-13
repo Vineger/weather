@@ -31,7 +31,7 @@ public class WeatherServiceImpl implements WeatherService {
             return (WeatherWeek) cache.get("week");
         }
         WeatherWeek weatherWeek = new WeatherWeek();
-        weatherWeek.setWeatherMap(fileOperation.readFiles(FileType.WEEK));
+//        weatherWeek.setWeatherMap(fileOperation.readFiles(FileType.WEEK));
         fileOperation.setLastWeekResult(weatherWeek);
         cache.put("week", weatherWeek);
         return weatherWeek;

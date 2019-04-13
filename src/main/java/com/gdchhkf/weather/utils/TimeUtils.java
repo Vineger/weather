@@ -1,12 +1,8 @@
 package com.gdchhkf.weather.utils;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class TimeUtils {
@@ -18,6 +14,12 @@ public class TimeUtils {
     public static LocalDateTime getLastMonday() {
         LocalDateTime today = LocalDateTime.now();
         return today.minusDays(today.getDayOfWeek().getValue() - 1).minusDays(7);
+    }
+
+    public static LocalDateTime getLastMonthFisrtDay() {
+        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime firstDay = today.minusMonths(1).withDayOfMonth(1);
+        return firstDay;
     }
 
     /**
@@ -53,10 +55,9 @@ public class TimeUtils {
         return dates;
     }
 
-    public static Date parseLocalDateTimeToDate(LocalDateTime dateTime){
-        ZoneId zoneId = ZoneId.systemDefault();
-        ZonedDateTime zonedDateTime = dateTime.atZone(zoneId);
-        return Date.from(zonedDateTime.toInstant());
+    public static LocalDate parseToLocalDate(String date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DAY);
+        return LocalDate.parse(date, formatter);
     }
 
     public static LocalDateTime parseTimeStampToLocalDateTime(long timeStamp){
